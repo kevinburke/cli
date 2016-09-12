@@ -3,11 +3,11 @@ package cli
 import (
 	"flag"
 	"fmt"
-	"os"
 	"reflect"
 	"runtime"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 )
 
@@ -77,7 +77,7 @@ func (f GenericFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				val.Set(envVal)
 				break
 			}
@@ -113,7 +113,7 @@ func (f StringSliceFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				newVal := &StringSlice{}
 				for _, s := range strings.Split(envVal, ",") {
 					s = strings.TrimSpace(s)
@@ -161,7 +161,7 @@ func (f IntSliceFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				newVal := &IntSlice{}
 				for _, s := range strings.Split(envVal, ",") {
 					s = strings.TrimSpace(s)
@@ -212,7 +212,7 @@ func (f Int64SliceFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				newVal := &Int64Slice{}
 				for _, s := range strings.Split(envVal, ",") {
 					s = strings.TrimSpace(s)
@@ -241,7 +241,12 @@ func (f BoolFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
+				if envVal == "" {
+					val = false
+					break
+				}
+
 				envValBool, err := strconv.ParseBool(envVal)
 				if err == nil {
 					val = envValBool
@@ -266,7 +271,12 @@ func (f BoolTFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
+				if envVal == "" {
+					val = false
+					break
+				}
+
 				envValBool, err := strconv.ParseBool(envVal)
 				if err == nil {
 					val = envValBool
@@ -290,7 +300,7 @@ func (f StringFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				f.Value = envVal
 				break
 			}
@@ -311,7 +321,7 @@ func (f IntFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				envValInt, err := strconv.ParseInt(envVal, 0, 64)
 				if err == nil {
 					f.Value = int(envValInt)
@@ -335,7 +345,7 @@ func (f Int64Flag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				envValInt, err := strconv.ParseInt(envVal, 0, 64)
 				if err == nil {
 					f.Value = envValInt
@@ -359,7 +369,7 @@ func (f UintFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				envValInt, err := strconv.ParseUint(envVal, 0, 64)
 				if err == nil {
 					f.Value = uint(envValInt)
@@ -383,7 +393,7 @@ func (f Uint64Flag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				envValInt, err := strconv.ParseUint(envVal, 0, 64)
 				if err == nil {
 					f.Value = uint64(envValInt)
@@ -407,7 +417,7 @@ func (f DurationFlag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				envValDuration, err := time.ParseDuration(envVal)
 				if err == nil {
 					f.Value = envValDuration
@@ -431,7 +441,7 @@ func (f Float64Flag) Apply(set *flag.FlagSet) {
 	if f.EnvVar != "" {
 		for _, envVar := range strings.Split(f.EnvVar, ",") {
 			envVar = strings.TrimSpace(envVar)
-			if envVal := os.Getenv(envVar); envVal != "" {
+			if envVal, ok := syscall.Getenv(envVar); ok {
 				envValFloat, err := strconv.ParseFloat(envVal, 10)
 				if err == nil {
 					f.Value = float64(envValFloat)
