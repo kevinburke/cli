@@ -1402,7 +1402,11 @@ func TestApp_OnUsageError_WithWrongFlagValue_ForSubcommand(t *testing.T) {
 func TestHandleAction_WithNonFuncAction(t *testing.T) {
 	app := NewApp()
 	app.Action = 42
-	err := HandleAction(app.Action, NewContext(app, flagSet(app.Name, app.Flags), nil))
+	fs, err := flagSet(app.Name, app.Flags)
+	if err != nil {
+		t.Errorf("error creating FlagSet: %s", err)
+	}
+	err = HandleAction(app.Action, NewContext(app, fs, nil))
 
 	if err == nil {
 		t.Fatalf("expected to receive error from Run, got none")
@@ -1426,7 +1430,11 @@ func TestHandleAction_WithNonFuncAction(t *testing.T) {
 func TestHandleAction_WithInvalidFuncSignature(t *testing.T) {
 	app := NewApp()
 	app.Action = func() string { return "" }
-	err := HandleAction(app.Action, NewContext(app, flagSet(app.Name, app.Flags), nil))
+	fs, err := flagSet(app.Name, app.Flags)
+	if err != nil {
+		t.Errorf("error creating FlagSet: %s", err)
+	}
+	err = HandleAction(app.Action, NewContext(app, fs, nil))
 
 	if err == nil {
 		t.Fatalf("expected to receive error from Run, got none")
@@ -1450,7 +1458,11 @@ func TestHandleAction_WithInvalidFuncSignature(t *testing.T) {
 func TestHandleAction_WithInvalidFuncReturnSignature(t *testing.T) {
 	app := NewApp()
 	app.Action = func(_ *Context) (int, error) { return 0, nil }
-	err := HandleAction(app.Action, NewContext(app, flagSet(app.Name, app.Flags), nil))
+	fs, err := flagSet(app.Name, app.Flags)
+	if err != nil {
+		t.Errorf("error creating FlagSet: %s", err)
+	}
+	err = HandleAction(app.Action, NewContext(app, fs, nil))
 
 	if err == nil {
 		t.Fatalf("expected to receive error from Run, got none")
@@ -1481,5 +1493,9 @@ func TestHandleAction_WithUnknownPanic(t *testing.T) {
 		fn(ctx)
 		return nil
 	}
-	HandleAction(app.Action, NewContext(app, flagSet(app.Name, app.Flags), nil))
+	fs, err := flagSet(app.Name, app.Flags)
+	if err != nil {
+		t.Errorf("error creating FlagSet: %s", err)
+	}
+	HandleAction(app.Action, NewContext(app, fs, nil))
 }
