@@ -155,8 +155,8 @@ var durationFlagTests = []struct {
 	name     string
 	expected string
 }{
-	{"help", "--help \"0\"\t"},
-	{"h", "-h \"0\"\t"},
+	{"help", "--help \"0s\"\t"},
+	{"h", "-h \"0s\"\t"},
 }
 
 func TestDurationFlagHelpOutput(t *testing.T) {
