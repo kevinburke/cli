@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/codegangsta/cli.png?branch=master)](https://travis-ci.org/codegangsta/cli)
+[![Build Status](https://travis-ci.org/kevinburke/cli.png?branch=master)](https://travis-ci.org/kevinburke/cli)
 
 # cli.go
 cli.go is simple, fast, and fun package for building command line apps in Go. The goal is to enable developers to write fast and distributable command line applications in an expressive way.
 
 You can view the API docs here:
-http://godoc.org/github.com/codegangsta/cli
+http://godoc.org/github.com/kevinburke/cli
 
 ## Overview
 Command line apps are usually so tiny that there is absolutely no reason why your code should *not* be self-documenting. Things like generating help text and parsing command flags/options should not hinder productivity when writing a command line app.
@@ -16,7 +16,7 @@ Make sure you have a working Go environment (go 1.1 is *required*). [See the ins
 
 To install `cli.go`, simply run:
 ```
-$ go get github.com/codegangsta/cli
+$ go get github.com/kevinburke/cli
 ```
 
 Make sure your `PATH` includes to the `$GOPATH/bin` directory so your commands can be easily used:
@@ -25,14 +25,14 @@ export PATH=$PATH:$GOPATH/bin
 ```
 
 ## Getting Started
-One of the philosophies behind cli.go is that an API should be playful and full of discovery. So a cli.go app can be as little as one line of code in `main()`. 
+One of the philosophies behind cli.go is that an API should be playful and full of discovery. So a cli.go app can be as little as one line of code in `main()`.
 
 ``` go
 package main
 
 import (
   "os"
-  "github.com/codegangsta/cli"
+  "github.com/kevinburke/cli"
 )
 
 func main() {
@@ -47,7 +47,7 @@ package main
 
 import (
   "os"
-  "github.com/codegangsta/cli"
+  "github.com/kevinburke/cli"
 )
 
 func main() {
@@ -57,7 +57,7 @@ func main() {
   app.Action = func(c *cli.Context) {
     println("boom! I say!")
   }
-  
+
   app.Run(os.Args)
 }
 ```
@@ -75,7 +75,7 @@ package main
 
 import (
   "os"
-  "github.com/codegangsta/cli"
+  "github.com/kevinburke/cli"
 )
 
 func main() {
@@ -293,6 +293,6 @@ setting the `PROG` variable to the name of your program:
 ## Contribution Guidelines
 Feel free to put up a pull request to fix a bug or maybe add a feature. I will give it a code review and make sure that it does not break backwards compatibility. If I or any other collaborators agree that it is in line with the vision of the project, we will work with you to get the code into a mergeable state and merge it into the master branch.
 
-If you have contributed something significant to the project, I will most likely add you as a collaborator. As a collaborator you are given the ability to merge others pull requests. It is very important that new code does not break existing code, so be careful about what code you do choose to merge. If you have any questions feel free to link @codegangsta to the issue in question and we can review it together.
+If you have contributed something significant to the project, I will most likely add you as a collaborator. As a collaborator you are given the ability to merge others pull requests. It is very important that new code does not break existing code, so be careful about what code you do choose to merge. If you have any questions feel free to link @kevinburke to the issue in question and we can review it together.
 
-If you feel like you have contributed to the project but have not yet been added as a collaborator, I probably forgot to add you. Hit @codegangsta up over email and we will get it figured out.
+If you feel like you have contributed to the project but have not yet been added as a collaborator, I probably forgot to add you. Hit @kevinburke up over email and we will get it figured out.
