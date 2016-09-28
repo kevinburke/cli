@@ -135,9 +135,9 @@ func (a *App) Run(arguments []string) (err error) {
 	context := NewContext(a, set, set)
 
 	if err != nil {
-		fmt.Fprintf(a.Writer, "Incorrect Usage.\n\n")
 		ShowAppHelp(context)
 		fmt.Fprintln(a.Writer)
+		fmt.Fprintf(a.Writer, "Incorrect Usage: %v\n\n", err)
 		return err
 	}
 

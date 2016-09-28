@@ -91,9 +91,9 @@ func (c Command) Run(ctx *Context) error {
 	}
 
 	if err != nil {
-		fmt.Fprint(ctx.App.Writer, "Incorrect Usage.\n\n")
 		ShowCommandHelp(ctx, c.Name)
 		fmt.Fprintln(ctx.App.Writer)
+		fmt.Fprintf(ctx.App.Writer, "Incorrect Usage: %v\n\n", err)
 		return err
 	}
 
